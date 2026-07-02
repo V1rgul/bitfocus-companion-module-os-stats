@@ -36,10 +36,15 @@ jobs:
           COMMIT_SHA: ${{ github.sha }}
           COMMIT_SUBJECT: ${{ github.event.head_commit.message }}
         run: |
+          package_name=$(jq -r '.name' package.json)
+          package_version=$(jq -r '.version' package.json)
+          commit_hash="${COMMIT_SHA::7}"
+          release_file="bitfocus-companion-module-${package_name}-v${package_version}-${commit_hash}.tgz"
+          mv pkg.tgz "$release_file"
           release_tag="sha-${COMMIT_SHA}"
           release_title="${COMMIT_SUBJECT%%$'\n'*}"
           gh release create "$release_tag" \
-            "pkg.tgz" \
+            "$release_file" \
             --target "$COMMIT_SHA" \
             --title "$release_title" \
             --generate-notes \
