@@ -15,3 +15,32 @@ jobs:
     uses: V1rgul/bitfocus-actions/.github/workflows/module-checks.yaml@main
     with:
       upload-artifact: true # upload the built package as an artifact to this workflow that you can download and share with others
+
+  release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/download-artifact@v7
+        with:
+          name: pkg
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMIT_SHA: ${{ github.sha }}
+          COMMIT_SUBJECT: ${{ github.event.head_commit.message }}
+        run: |
+          release_tag="sha-${COMMIT_SHA}"
+          release_title="${COMMIT_SUBJECT%%$'\n'*}"
+          gh release create "$release_tag" \
+            "pkg.tgz" \
+            --target "$COMMIT_SHA" \
+            --title "$release_title" \
+            --generate-notes \
+            --latest
