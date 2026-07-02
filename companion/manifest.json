@@ -1,0 +1,28 @@
+{
+	"$schema": "../node_modules/@companion-module/base/assets/manifest.schema.json",
+	"type": "connection",
+	"id": "os-stats",
+	"name": "os-stats",
+	"shortname": "osstats",
+	"description": "OS statistics for Companion",
+	"version": "0.0.0",
+	"license": "",
+	"repository": "git+https://github.com/V1rgul/bitfocus-companion-module-os-stats.git",
+	"bugs": "https://github.com/V1rgul/bitfocus-companion-module-os-stats/issues",
+	"maintainers": [
+		{
+			"name": "V1rgul",
+			"email": "v1rgul@users.noreply.github.com"
+		}
+	],
+	"legacyIds": [],
+	"runtime": {
+		"type": "node22",
+		"api": "nodejs-ipc",
+		"apiVersion": "0.0.0",
+		"entrypoint": "../dist/main.js"
+	},
+	"manufacturer": "Generic",
+	"products": ["OS Stats"],
+	"keywords": ["System"]
+}
